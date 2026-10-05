@@ -12,6 +12,7 @@ const randomNumber = ()=>{
     return Math.random()
 }
 
+
 const food ={
     x:radomPosition(),
     y:90,
