@@ -2,21 +2,38 @@ const canvas = document.querySelector("canvas")
 
 const ctx = canvas.getContext("2d")
 
+const h1 = document.querySelector("h1")
+
 const size = 30
 
 const snake = [
     {x:270,y:240},
 ]
 
-const randomNumber = ()=>{
-    return Math.random()
+const randomNumber = (min,max)=>{
+    return Math.round(Math.random()*(max-min)+min)
 }
+
+const randomPosition = ()=>{
+    const number = randomNumber(0,canvas.width-size)
+    return Math.round(number / 30)*30
+}
+
+const randomColor = () =>{
+   const red =  randomNumber(0,255)
+   const green =  randomNumber(0,255)
+   const blue =  randomNumber(0,255)
+
+   return `rgb(${red},${green},${blue})`
+}
+
+h1.innerText = randomColor()
 
 
 const food ={
-    x:radomPosition(),
-    y:90,
-    color:"yellow"
+    x:randomPosition(),
+    y:randomPosition(),
+    color:randomColor()
 }
 
 let direction,loopId
@@ -84,6 +101,18 @@ const drawGrid = ()=>{
 
 }
 
+const checkEat = ()=>{
+    const head = snake[snake.length-1]
+
+    if(head.x == food.x && head.y == food.y){
+        snake.push(head)
+
+
+        food.x=randomPosition()
+        food.y=randomPosition()
+        food.color=randomColor()
+    }
+}
 
 const gameLoop = ()=>{
     clearInterval(loopId)
@@ -93,6 +122,7 @@ const gameLoop = ()=>{
     moveSnake()
     drawGrid()
     drawFood()
+    checkEat()
 
     loopId = setTimeout(()=>{
         gameLoop()
